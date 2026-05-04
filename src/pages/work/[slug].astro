@@ -31,6 +31,7 @@ const metaRows = [
   <!-- Opening block (white bg) -->
   <section class="opening">
     <div class="opening__inner">
+      <a href="/#work" class="opening__back">← Back to work</a>
       {cs.logo
         ? <img src={cs.logo} alt={cs.company} class="opening__logo" />
         : <p class="opening__company">{cs.company}</p>
@@ -141,6 +142,19 @@ const metaRows = [
     max-width: 900px;
     margin: 0 auto;
     padding: 64px var(--pad) 48px;
+  }
+
+  .opening__back {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-sec);
+    margin-bottom: 24px;
+    transition: color 0.15s;
+  }
+
+  .opening__back:hover {
+    color: var(--color-violet);
   }
 
   .opening__logo {
