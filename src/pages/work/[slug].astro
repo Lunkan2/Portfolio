@@ -1,0 +1,389 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import { caseStudies } from '../../data/caseStudies';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return caseStudies.map((cs) => ({ params: { slug: cs.slug }, props: { cs } }));
+};
+
+const { cs } = Astro.props;
+
+const pillClass: Record<string, string> = {
+  "UX / UI Design":  "pill--ux",
+  "Product Design":  "pill--product",
+  "Service Design":  "pill--service",
+  "User Research":   "pill--research",
+};
+
+const metaRows = [
+  { label: "Timeline", value: cs.timeline },
+  { label: "Role",     value: cs.role },
+  { label: "Team",     value: cs.team },
+  { label: "Methods",  value: cs.methods },
+];
+---
+
+<Layout title={`${cs.company} — Oskar Lundkvist`} description={cs.oneliner}>
+  <Nav currentPath="/" />
+
+  <!-- Opening block (white bg) -->
+  <section class="opening">
+    <div class="opening__inner">
+      {cs.logo
+        ? <img src={cs.logo} alt={cs.company} class="opening__logo" />
+        : <p class="opening__company">{cs.company}</p>
+      }
+      <h1 class="opening__title">{cs.oneliner}</h1>
+
+      <ul class="opening__pills" role="list" aria-label="Skills used">
+        {cs.pills.map(pill => (
+          <li><span class={`pill ${pillClass[pill]}`}>{pill}</span></li>
+        ))}
+      </ul>
+
+      <div class="opening__divider" role="separator"></div>
+
+      <div class="opening__meta-cols">
+        <div class="opening__col">
+          <p class="opening__col-label">The challenge</p>
+          <p class="opening__col-text">{cs.challenge}</p>
+        </div>
+        <div class="opening__col">
+          <p class="opening__col-label">What I did</p>
+          <p class="opening__col-text">{cs.whatIDid}</p>
+        </div>
+      </div>
+
+      <dl class="opening__meta">
+        {metaRows.map(row => (
+          <div class="opening__meta-row">
+            <dt>{row.label}</dt>
+            <dd>{row.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Process sections (beige bg) -->
+  <article class="process">
+    <div class="process__inner">
+      {cs.sections.map((section, i) => (
+        <section class="process__section" aria-labelledby={`section-${i}`}>
+          <h2 id={`section-${i}`} class="process__heading">{section.heading}</h2>
+          <div class="process__body">
+            {section.body.split('\n\n').map(para => (
+              <p>{para}</p>
+            ))}
+          </div>
+
+          {section.images && section.images.length > 0 && (
+            <div class="process__images">
+              {section.images.map((src, idx) => (
+                <div class="process__image">
+                  <img src={src} alt="" loading="lazy" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {section.callout && (
+            <blockquote class="process__callout">
+              {section.callout}
+            </blockquote>
+          )}
+
+          {i < cs.sections.length - 1 && (
+            <div class="process__divider" role="separator"></div>
+          )}
+        </section>
+      ))}
+    </div>
+  </article>
+
+  <!-- Next case -->
+  <a href={`/work/${cs.nextSlug}`} class="next-case" aria-label={`Next case: ${cs.nextCompany}`}>
+    <div class="next-case__inner">
+      <p class="next-case__label">Next case</p>
+      <p class="next-case__title">{cs.nextOneliner}</p>
+      <span class="next-case__arrow">{cs.nextCompany} →</span>
+    </div>
+  </a>
+</Layout>
+
+<style>
+  /* Pills */
+  .pill {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #fff;
+    border: 1px solid currentColor;
+    line-height: 1.3;
+  }
+
+  .pill--ux       { color: var(--pill-ux); }
+  .pill--product  { color: var(--pill-product); }
+  .pill--service  { color: var(--pill-service); }
+  .pill--research { color: var(--pill-research); }
+
+  /* Opening block */
+  .opening {
+    background: var(--color-hero-bg);
+    padding-bottom: 0;
+  }
+
+  .opening__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 64px var(--pad) 48px;
+  }
+
+  .opening__logo {
+    width: 141px;
+    height: auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .opening__company {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-sec);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .opening__title {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .opening__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin-bottom: 36px;
+  }
+
+  .opening__divider {
+    height: 1px;
+    background: var(--color-lavender);
+    margin-bottom: 32px;
+  }
+
+  /* Two-column meta */
+  .opening__meta-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .opening__col-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-sec);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .opening__col-text {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--color-text);
+  }
+
+  /* Metadata rows */
+  .opening__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--color-lavender);
+  }
+
+  .opening__meta-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    align-items: baseline;
+  }
+
+  .opening__meta-row dt {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-sec);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .opening__meta-row dd {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  /* Process sections */
+  .process {
+    background: var(--color-bg);
+  }
+
+  .process__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--pad);
+  }
+
+  .process__section {
+    padding-top: 48px;
+  }
+
+  .process__heading {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text);
+    margin-bottom: 18px;
+  }
+
+  .process__body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .process__body p {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--color-text);
+  }
+
+  .process__images {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .process__image {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .process__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+
+  .process__callout {
+    background: #EDE4FB;
+    border-radius: 8px;
+    padding: 20px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin: 0 0 24px;
+  }
+
+  .process__divider {
+    height: 1px;
+    background: var(--color-lavender);
+    margin-top: 48px;
+  }
+
+  /* Next case */
+  .next-case {
+    display: block;
+    background: var(--color-card-bg);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.15s;
+  }
+
+  .next-case:hover { opacity: 0.85; }
+
+  .next-case__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px var(--pad);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 8px 16px;
+    align-items: center;
+  }
+
+  .next-case__label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-sec);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .next-case__title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text);
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .next-case__arrow {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-violet);
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    white-space: nowrap;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .opening__inner {
+      padding: 40px var(--pad-m) 40px;
+    }
+
+    .opening__meta-cols {
+      grid-template-columns: 1fr;
+    }
+
+    .opening__meta-row {
+      grid-template-columns: 90px 1fr;
+    }
+
+    .process__inner {
+      padding: 0 var(--pad-m);
+    }
+
+    .process__heading { font-size: 18px; }
+
+    .next-case__inner {
+      padding: 32px var(--pad-m);
+    }
+
+    .next-case__title { font-size: 16px; }
+  }
+</style>

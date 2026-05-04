@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --color-bg:          #F5F0E8;
+  --color-hero-bg:     #FFFFFF;
+  --color-card-bg:     #EDE7D9;
+  --color-text:        #1A1A1A;
+  --color-text-sec:    #5C5450;
+  --color-violet:      #63238C;
+  --color-lavender:    #C6B4FB;
+  --color-border:      #E0D9CE;
+  --color-img-ph:      #D1C8BA;
+
+  --pill-ux:      #63238C;
+  --pill-product: #C4511E;
+  --pill-service: #2D7A4A;
+  --pill-research:#1B5EA6;
+
+  --font-display: 'Fraunces', serif;
+  --font-body:    'Montserrat', sans-serif;
+
+  --content-width: 720px;
+  --page-padding:  80px;
+  --page-padding-mobile: 24px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

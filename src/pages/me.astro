@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<Layout title="Me — Oskar Lundkvist" description="About Oskar Lundkvist, UX designer based in Malmö.">
+  <Nav currentPath="/me" />
+
+  <main class="me">
+    <div class="me__circles" aria-hidden="true">
+      <span class="circle circle--tr-outer"></span>
+      <span class="circle circle--tr-inner"></span>
+      <span class="circle circle--bl-outer"></span>
+      <span class="circle circle--bl-inner"></span>
+    </div>
+
+    <div class="me__content">
+      <div class="me__photo">
+        <img src="/images/Me.jpg" alt="Oskar Lundkvist" />
+      </div>
+
+      <div class="me__text">
+        <p>I live in Malmö with my wife, who's also a UX designer, our two cats Toffee and Whiskey, and our dog Salsa.</p>
+        <p>In high school I was drawn to three things: technology, design, and psychology. I didn't know how those fit together until I found UX design at Hyper Island. Now I get to work at the intersection of all three, on projects that hopefully make someone's life a little easier.</p>
+        <p>Outside of work I spend my time out in nature, playing story and strategy games, and reading fantasy books.</p>
+      </div>
+
+      <div class="me__pets" aria-label="My pets">
+        <div class="me__pet">
+          <div class="me__pet-photo">
+            <img src="/images/Toffee.jpg" alt="Toffee the cat" />
+          </div>
+          <p class="me__pet-name">Toffee</p>
+          <p class="me__pet-type">Cat</p>
+        </div>
+        <div class="me__pet">
+          <div class="me__pet-photo">
+            <img src="/images/Whiskey.jpg" alt="Whiskey the cat" />
+          </div>
+          <p class="me__pet-name">Whiskey</p>
+          <p class="me__pet-type">Cat</p>
+        </div>
+        <div class="me__pet">
+          <div class="me__pet-photo">
+            <img src="/images/Salsa.jpg" alt="Salsa the dog" />
+          </div>
+          <p class="me__pet-name">Salsa</p>
+          <p class="me__pet-type">Dog</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .me {
+    position: relative;
+    min-height: 100vh;
+    background: var(--color-bg);
+    overflow: hidden;
+  }
+
+  /* Decorative circles */
+  .me__circles { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 14px solid var(--color-lavender);
+  }
+
+  .circle--tr-outer { width: 640px; height: 640px; right: -160px; top: -100px; opacity: 0.45; }
+  .circle--tr-inner { width: 568px; height: 568px; right: -124px; top: -64px;  opacity: 0.25; }
+  .circle--bl-outer { width: 400px; height: 400px; left: -100px; bottom: -100px; opacity: 0.35; border-width: 12px; }
+  .circle--bl-inner { width: 344px; height: 344px; left: -72px;  bottom: -72px;  opacity: 0.18; border-width: 12px; }
+
+  .me__content {
+    position: relative;
+    z-index: 1;
+    max-width: var(--content-w);
+    margin: 0 auto;
+    padding: 64px var(--pad) 80px;
+  }
+
+  /* Photo */
+  .me__photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #D1C8BA;
+    border-radius: 8px;
+    margin-bottom: 56px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .me__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .me__photo-label {
+    font-size: 13px;
+    color: var(--color-sec);
+  }
+
+  /* Text */
+  .me__text {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-bottom: 56px;
+  }
+
+  .me__text p {
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--color-text);
+  }
+
+  /* Pets */
+  .me__pets {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .me__pet-photo {
+    aspect-ratio: 1;
+    background: #C8BFB3;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .me__pet-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .me__pet-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .me__pet-type {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--color-sec);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .me__content {
+      padding: 40px var(--pad-m) 60px;
+    }
+
+    .me__text p { font-size: 16px; }
+    .me__photo { margin-bottom: 40px; }
+    .me__text { margin-bottom: 40px; }
+  }
+</style>

@@ -1,0 +1,147 @@
+---
+const navLinks = [
+  { label: "Work", href: "/#work" },
+  { label: "Me",   href: "/me" },
+  { label: "Contact", href: "/contact" },
+];
+
+const { currentPath = "/" } = Astro.props;
+---
+
+<nav class="nav" aria-label="Main navigation">
+  <a href="/" class="nav__name">Oskar Lundkvist <span class="nav__title">- UX designer</span></a>
+
+  <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <ul class="nav__links" id="nav-menu" role="list">
+    {navLinks.map(link => (
+      <li>
+        <a href={link.href} class={`nav__link ${currentPath === link.href ? "nav__link--active" : ""}`}>
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    padding: 0 var(--pad);
+    background: var(--color-hero-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav__name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+    white-space: nowrap;
+  }
+
+  .nav__title {
+    font-weight: 400;
+  }
+
+  .nav__links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav__link {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text);
+    transition: color 0.15s;
+  }
+
+  .nav__link:hover,
+  .nav__link--active {
+    color: var(--color-violet);
+  }
+
+  .nav__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .nav__hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-text);
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  @media (max-width: 768px) {
+    .nav {
+      height: 56px;
+      padding: 0 var(--pad-m);
+    }
+
+    .nav__title {
+      display: none;
+    }
+
+    .nav__name {
+      font-size: 13px;
+    }
+
+    .nav__hamburger {
+      display: flex;
+    }
+
+    .nav__links {
+      display: none;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-hero-bg);
+      border-bottom: 1px solid var(--color-border);
+      padding: 16px var(--pad-m);
+    }
+
+    .nav__links.is-open {
+      display: flex;
+    }
+
+    .nav__link {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 16px;
+    }
+
+    .nav__link:last-child {
+      border-bottom: none;
+    }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector('.nav__hamburger') as HTMLButtonElement;
+  const menu = document.querySelector('.nav__links') as HTMLElement;
+
+  btn?.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+  });
+</script>

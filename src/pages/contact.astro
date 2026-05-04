@@ -1,0 +1,248 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<Layout title="Contact — Oskar Lundkvist" description="Get in touch with Oskar Lundkvist, UX designer.">
+  <Nav currentPath="/contact" />
+
+  <main class="contact">
+    <div class="contact__circles" aria-hidden="true">
+      <span class="circle circle--tl-outer"></span>
+      <span class="circle circle--tl-inner"></span>
+      <span class="circle circle--br-outer"></span>
+      <span class="circle circle--br-inner"></span>
+    </div>
+
+    <div class="contact__content">
+      <h1 class="contact__heading">Contact</h1>
+
+      <p class="contact__intro">
+        Contact me on LinkedIn or just write me an email if you want to have a chat!
+      </p>
+
+      <a
+        href="https://www.linkedin.com/in/oskarlundkvist"
+        class="contact__linkedin"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        LinkedIn ↗
+      </a>
+
+      <div class="contact__divider" role="separator"></div>
+
+      <form
+        class="contact__form"
+        method="POST"
+        action="https://formsubmit.co/olundkvist92@gmail.com"
+        aria-label="Contact form"
+      >
+        <!-- Formsubmit config -->
+        <input type="hidden" name="_subject" value="New message from your portfolio" />
+        <input type="hidden" name="_next" id="next-url" value="" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="text" name="_honey" style="display:none" />
+
+        <div class="contact__field">
+          <label for="email" class="sr-only">Your email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Your email"
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="contact__field">
+          <label for="subject" class="sr-only">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            placeholder="Subject"
+            required
+          />
+        </div>
+
+        <div class="contact__field">
+          <label for="message" class="sr-only">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Message"
+            rows="6"
+            required
+          ></textarea>
+        </div>
+
+        <div class="contact__submit">
+          <button type="submit">Send message</button>
+        </div>
+      </form>
+
+      <div class="contact__success" id="success-message" aria-live="polite">
+        <p>Message sent! I'll get back to you soon.</p>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  // Set the _next redirect to the current origin so it works on any domain
+  const nextInput = document.getElementById('next-url') as HTMLInputElement;
+  if (nextInput) {
+    nextInput.value = window.location.origin + '/contact?sent=true';
+  }
+
+  // Show success message if redirected back after submission
+  if (window.location.search.includes('sent=true')) {
+    const form = document.querySelector('.contact__form') as HTMLElement;
+    const success = document.getElementById('success-message');
+    if (form) form.style.display = 'none';
+    if (success) success.style.display = 'block';
+  }
+</script>
+
+<style>
+  .contact {
+    position: relative;
+    min-height: 100vh;
+    background: var(--color-bg);
+    overflow: hidden;
+  }
+
+  /* Decorative circles */
+  .contact__circles { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 14px solid var(--color-lavender);
+  }
+
+  .circle--tl-outer { width: 400px; height: 400px; left: -120px; top: -80px;   opacity: 0.40; border-width: 12px; }
+  .circle--tl-inner { width: 344px; height: 344px; left: -92px;  top: -52px;   opacity: 0.22; border-width: 12px; }
+  .circle--br-outer { width: 560px; height: 560px; right: -140px; bottom: -100px; opacity: 0.38; }
+  .circle--br-inner { width: 488px; height: 488px; right: -108px; bottom: -68px;  opacity: 0.20; }
+
+  .contact__content {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 72px var(--pad) 80px;
+  }
+
+  .contact__heading {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+
+  .contact__intro {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-text);
+    margin-bottom: 14px;
+  }
+
+  .contact__linkedin {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-violet);
+    text-decoration: underline;
+    margin-bottom: 32px;
+  }
+
+  .contact__divider {
+    height: 1px;
+    background: var(--color-violet);
+    margin-bottom: 28px;
+  }
+
+  /* Form */
+  .contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact__field input,
+  .contact__field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text);
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    outline: none;
+    resize: none;
+    transition: border-color 0.15s;
+  }
+
+  .contact__field input::placeholder,
+  .contact__field textarea::placeholder {
+    color: var(--color-sec);
+  }
+
+  .contact__field input:focus,
+  .contact__field textarea:focus {
+    border-color: var(--color-violet);
+  }
+
+  .contact__submit {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .contact__submit button {
+    padding: 14px 24px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--color-violet);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .contact__submit button:hover { opacity: 0.88; }
+
+  .contact__success {
+    display: none;
+    padding: 20px 24px;
+    background: #EDE4FB;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 768px) {
+    .contact__content {
+      padding: 48px var(--pad-m) 60px;
+    }
+  }
+</style>

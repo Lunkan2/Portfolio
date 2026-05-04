@@ -1,0 +1,363 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+
+const projects = [
+  {
+    company: "Ubisoft",
+    oneliner: "Helping Ubisoft players show off their game identity",
+    slug: "ubisoft",
+    pills: ["UX / UI Design", "Product Design", "User Research"],
+    image: "/images/UbiCase.jpg",
+    imagePosition: "center",
+  },
+  {
+    company: "IKEA",
+    oneliner: "Prototyping AI-assisted tools inside one of the world's most complex retail operations",
+    slug: "ikea",
+    pills: ["UX / UI Design", "Product Design", "User Research", "Service Design"],
+    image: "/images/IkeaCase.jpg",
+    imagePosition: "top",
+  },
+  {
+    company: "Arjo",
+    oneliner: "Helping Arjo's service technicians understand the problem before they arrive on site",
+    slug: "arjo",
+    pills: ["UX / UI Design", "Product Design", "User Research"],
+    image: "/images/ArjoCase.jpg",
+    imagePosition: "top",
+  },
+  {
+    company: "Sappi",
+    oneliner: "Helping Sappi align on if, and how, to digitise their production planning",
+    slug: "sappi",
+    pills: ["Service Design", "UX / UI Design", "User Research"],
+    image: "/images/SappiCase.jpg",
+    imagePosition: "center",
+  },
+];
+
+const pillClass: Record<string, string> = {
+  "UX / UI Design":  "pill--ux",
+  "Product Design":  "pill--product",
+  "Service Design":  "pill--service",
+  "User Research":   "pill--research",
+};
+---
+
+<Layout title="Oskar Lundkvist — UX Designer">
+  <Nav currentPath="/" />
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__circles" aria-hidden="true">
+      <span class="hero__circle hero__circle--lg-outer"></span>
+      <span class="hero__circle hero__circle--lg-inner"></span>
+      <span class="hero__circle hero__circle--sm-outer"></span>
+      <span class="hero__circle hero__circle--sm-inner"></span>
+    </div>
+
+    <div class="hero__content">
+      <h1 class="hero__name">Oskar Lundkvist</h1>
+      <p class="hero__tagline">I design through real conversations in the world.</p>
+
+      <ul class="hero__pills" role="list" aria-label="Design disciplines">
+        {["UX / UI Design", "Product Design", "Service Design", "User Research"].map(pill => (
+          <li><span class={`pill ${pillClass[pill]}`}>{pill}</span></li>
+        ))}
+      </ul>
+
+      <div class="hero__companies">
+        <img src="/images/IkeaLogo.svg" alt="IKEA" class="hero__company-logo" />
+        <img src="/images/ArjoLogo.svg" alt="Arjo" class="hero__company-logo" />
+        <img src="/images/UbiLogo.svg" alt="Ubisoft" class="hero__company-logo" />
+      </div>
+    </div>
+
+    <div class="hero__photo">
+      <img src="/images/Header.jpg" alt="Oskar Lundkvist" />
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="work" id="work" aria-label="Selected work">
+    <ul class="work__grid" role="list">
+      {projects.map(project => (
+        <li>
+          <a href={`/work/${project.slug}`} class="card">
+            <div class="card__image">
+              {project.image && (
+                <img src={project.image} alt={`${project.company} project`} loading="lazy" style={`object-position: ${project.imagePosition}`} />
+              )}
+              {/* Desktop: pills inside image, bottom-right */}
+              <ul class="card__pills card__pills--desktop" aria-hidden="true">
+                {project.pills.map(pill => (
+                  <li><span class={`pill pill--sm ${pillClass[pill]}`}>{pill}</span></li>
+                ))}
+              </ul>
+            </div>
+            <p class="card__company">{project.company}</p>
+            <p class="card__oneliner">{project.oneliner}</p>
+            {/* Mobile: pills below title */}
+            <ul class="card__pills card__pills--mobile" role="list" aria-label="Skills used">
+              {project.pills.map(pill => (
+                <li><span class={`pill pill--sm ${pillClass[pill]}`}>{pill}</span></li>
+              ))}
+            </ul>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <a href="/community" class="community-card">
+      <span class="community-card__label">Community</span>
+      <p class="community-card__title">Speaking, mentoring, and teaching the next generation of designers</p>
+      <span class="community-card__cta">Read more →</span>
+    </a>
+  </section>
+</Layout>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    min-height: 380px;
+    padding: 72px var(--pad) 64px;
+    background: var(--color-hero-bg);
+    overflow: hidden;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    max-width: min(820px, calc(100% - var(--pad) - 260px - 48px - var(--pad)));
+  }
+
+  .hero__name {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 18px;
+  }
+
+  .hero__tagline {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 400;
+    line-height: 1.4;
+    margin-bottom: 18px;
+  }
+
+  .hero__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin-bottom: 18px;
+  }
+
+  .hero__companies {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .hero__company-logo {
+    width: 72px;
+    height: auto;
+    display: block;
+    opacity: 0.55;
+  }
+
+  .hero__photo {
+    position: absolute;
+    right: var(--pad);
+    top: 41px;
+    z-index: 1;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: var(--color-card-bg);
+    overflow: hidden;
+  }
+
+  .hero__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Decorative circles */
+  .hero__circles { position: absolute; inset: 0; pointer-events: none; }
+
+  .hero__circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 14px solid var(--color-lavender);
+  }
+
+  .hero__circle--lg-outer { width: 640px; height: 640px; right: -160px; top: -240px; opacity: 0.45; }
+  .hero__circle--lg-inner { width: 568px; height: 568px; right: -124px; top: -204px; opacity: 0.25; }
+  .hero__circle--sm-outer { width: 400px; height: 400px; left: -100px; bottom: -200px; opacity: 0.35; border-width: 12px; }
+  .hero__circle--sm-inner { width: 344px; height: 344px; left: -72px;  bottom: -172px; opacity: 0.18; border-width: 12px; }
+
+  /* Pills */
+  .pill {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #fff;
+    border: 1px solid currentColor;
+    line-height: 1.3;
+  }
+
+  .pill--sm { font-size: 11px; padding: 5px 10px; }
+  .pill--ux       { color: var(--pill-ux); }
+  .pill--product  { color: var(--pill-product); }
+  .pill--service  { color: var(--pill-service); }
+  .pill--research { color: var(--pill-research); }
+
+  /* Work section */
+  .work {
+    padding: 64px var(--pad) 80px;
+    background: var(--color-bg);
+  }
+
+  .work__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    list-style: none;
+    margin-bottom: 32px;
+  }
+
+  @media (min-width: 1512px) {
+    .work__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Card */
+  .card { display: block; color: inherit; }
+
+  .card__image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #D1C8BA;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover .card__image img { transform: scale(1.03); }
+
+  .card__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    list-style: none;
+  }
+
+  .card__pills--desktop {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    max-width: calc(100% - 24px);
+    justify-content: flex-end;
+    flex-wrap: wrap-reverse;
+    align-content: flex-start;
+  }
+
+  .card__pills--desktop .pill { background: rgba(255, 255, 255, 0.92); }
+
+  .card__pills--mobile {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .card__company {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-sec);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .card__oneliner {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* Community card */
+  .community-card {
+    display: block;
+    padding: 28px 32px;
+    background: var(--color-card-bg);
+    border-radius: 8px;
+    color: inherit;
+    transition: opacity 0.15s;
+  }
+
+  .community-card:hover { opacity: 0.85; }
+
+  .community-card__label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-sec);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .community-card__title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    max-width: 700px;
+  }
+
+  .community-card__cta {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-violet);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 40px var(--pad-m) 48px;
+      min-height: unset;
+    }
+
+    .hero__content { max-width: 100%; }
+    .hero__photo { display: none; }
+
+    .work {
+      padding: 32px var(--pad-m) 48px;
+    }
+
+    .work__grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .card__pills--desktop { display: none; }
+    .card__pills--mobile  { display: flex; }
+
+    .community-card { padding: 20px; }
+    .community-card__title { font-size: 16px; }
+  }
+</style>
